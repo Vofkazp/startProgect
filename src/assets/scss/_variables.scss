@@ -1,0 +1,31 @@
+@use "sass:math";
+
+$columns: 12;
+$distance: 30px;
+$paddingSizeContainer: 10px;
+$paddingMin: 8px;
+$marginMin: 8px;
+
+$sizes: (
+        'xs':390px,
+        'sm': 670px,
+        'md': 980px,
+        'xl': 1050px,
+        'lg': 1340px
+);
+
+$colors: (
+'primary': #FFA900,
+'primary-dark': #E18B00,
+'primary-light': #FFF6E5,
+'secondary': #38B6FF,
+'black': #0F0F0F,
+'white': #FFFFFF,
+'red': #E94A4A,
+'orange': #F9C43E,
+'green': #44E083,
+);
+
+$borderStyle: none, hidden, dotted, dashed, solid, double, groove, ridge, inset, outset;
+
+$indent: math.div($distance, 2);

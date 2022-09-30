@@ -1,0 +1,172 @@
+@use "sass:math";
+@import "variables";
+
+@function getPreviousSize($currentSize) {
+  $keys: map-keys($sizes);
+  $index: index($keys, $currentSize)-1;
+  $value: map-values($sizes);
+  @return nth($value, $index);
+}
+
+@function getCurrentField($index) {
+  $keys: map-keys($sizes);
+  @return nth($keys, $index);
+}
+
+@function getCurrentValue($index) {
+  $value: map-values($sizes);
+  @return nth($value, $index);
+}
+
+@function size($item) {
+  @return math.div(100%, $columns) * $item
+}
+
+@function radiusSize($i) {
+  @return 2px * $i;
+}
+
+@mixin media($minmax, $media) {
+  @each $size, $resolution in $sizes {
+    @if $media == $size {
+      @if ($minmax != "within") {
+        @media only screen and (#{$minmax}-width: $resolution) {
+          @content;
+        }
+      } @else {
+        @if (index(map-keys($sizes), $media) > 1) {
+          @media only screen and (min-width: getPreviousSize($media)) and (max-width: $resolution) {
+            @content;
+          }
+        } @else {
+          @media only screen and (max-width: $resolution) {
+            @content;
+          }
+        }
+      }
+    }
+  }
+}
+
+@mixin mediaSize($size) {
+  $keys: map-keys($sizes);
+  $index: index($keys, $size);
+  @for $i from 1 through $index {
+    $sizeFinal: nth($keys, $i);
+    @for $k from 1 through $columns {
+      .col-#{$sizeFinal}-#{$k} {
+        flex: 0 0 auto;
+        width: size($k);
+        padding-left: $indent;
+        padding-right: $indent;
+      }
+    }
+  }
+}
+
+@mixin getPadding() {
+  @for $i from 0 through 10 {
+    .p-#{$i} {
+      padding: math.div($paddingMin, 2) * $i;
+    }
+    .p-t-#{$i} {
+      padding-top: math.div($paddingMin, 2) * $i;
+    }
+    .p-l-#{$i} {
+      padding-left: math.div($paddingMin, 2) * $i;
+    }
+    .p-r-#{$i} {
+      padding-right: math.div($paddingMin, 2) * $i;
+    }
+    .p-b-#{$i} {
+      padding-bottom: math.div($paddingMin, 2) * $i;
+    }
+    .p-x-#{$i} {
+      padding-left: math.div($paddingMin, 2) * $i;
+      padding-right: math.div($paddingMin, 2) * $i;
+    }
+    .p-y-#{$i} {
+      padding-top: math.div($paddingMin, 2) * $i;
+      padding-bottom: math.div($paddingMin, 2) * $i;
+    }
+  }
+}
+
+@mixin getMargin() {
+  @for $i from 0 through 10 {
+    .m-auto {
+      margin: auto;
+    }
+    .m-x-auto {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .m-y-auto {
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+    .m-#{$i} {
+      margin: math.div($marginMin, 2) * $i;
+    }
+    .m-t-#{$i} {
+      margin-top: math.div($marginMin, 2) * $i;
+    }
+    .m-l-#{$i} {
+      margin-left: math.div($marginMin, 2) * $i;
+    }
+    .m-r-#{$i} {
+      margin-right: math.div($marginMin, 2) * $i;
+    }
+    .m-b-#{$i} {
+      margin-bottom: math.div($marginMin, 2) * $i;
+    }
+    .m-x-#{$i} {
+      margin-left: math.div($marginMin, 2) * $i;
+      margin-right: math.div($marginMin, 2) * $i;
+    }
+    .m-y-#{$i} {
+      margin-top: math.div($marginMin, 2) * $i;
+      margin-bottom: math.div($marginMin, 2) * $i;
+    }
+  }
+}
+
+@mixin colorBase() {
+  @each $name, $value in $colors {
+    .#{$name}-color {
+      color: $value;
+    }
+
+    .#{$name}-background {
+      background-color: $value;
+    }
+
+    .#{$name}-border {
+      border-color: $value;
+    }
+  }
+}
+
+@mixin getBorderWidth() {
+  @for $i from 0 through 5 {
+    .border-#{$i} {
+      border-width: #{$i}px;
+    }
+  }
+}
+
+@mixin borderStyle() {
+  @each $name in $borderStyle {
+    .border-#{$name} {
+      border-style: $name;
+    }
+  }
+}
+
+@mixin borderRadius() {
+  @for $i from 0 through 5 {
+    .radius-#{$i} {
+      border-radius: radiusSize($i);
+    }
+  }
+}
